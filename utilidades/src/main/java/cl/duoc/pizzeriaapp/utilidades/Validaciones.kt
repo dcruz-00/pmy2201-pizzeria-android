@@ -79,3 +79,19 @@ fun convertirFecha(texto: String): LocalDate? {
 // Fechas permitidas para un pedido: desde hoy hasta 30 días después.
 fun rangoFechasPedido(hoy: LocalDate = LocalDate.now()): ClosedRange<LocalDate> =
     hoy..hoy.plusDays(DIAS_MAX_PROGRAMACION)
+
+// Largo permitido para una dirección (sin espacios al inicio o al final).
+val RANGO_LARGO_DIRECCION = 3..100
+
+// Revisa los datos de un formulario de cliente y devuelve un mensaje por cada campo
+// inválido (lista vacía = todo correcto). Se revisan todos los campos de una vez
+// para que el usuario corrija todo en un solo intento.
+fun erroresCliente(nombre: String, telefono: String, correo: String, direccion: String): List<String> =
+    buildList {
+        if (!esNombreValido(nombre)) add("Nombre: solo letras y espacios, entre 2 y 50 caracteres.")
+        if (formatearTelefono(telefono) == null) add("Teléfono: número chileno de 9 dígitos (ej.: 9 1234 5678).")
+        if (!esCorreoValido(correo.trim())) add("Correo: formato nombre@dominio.cl.")
+        if (direccion.trim().length !in RANGO_LARGO_DIRECCION) {
+            add("Dirección: entre ${RANGO_LARGO_DIRECCION.first} y ${RANGO_LARGO_DIRECCION.last} caracteres.")
+        }
+    }

@@ -29,5 +29,9 @@ class RegistroClientes {
 
     val cantidad: Int get() = clientes.size
 
+    // Último cliente registrado. linkedSetOf mantiene el orden de inserción, y un
+    // duplicado no se agrega, así que no cambia el último.
+    val ultimo: Cliente? get() = clientes.lastOrNull()
+
     fun todos(): List<Cliente> = clientes.toList()
 }

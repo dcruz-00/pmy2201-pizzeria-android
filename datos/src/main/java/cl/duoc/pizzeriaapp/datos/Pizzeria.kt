@@ -8,6 +8,9 @@ import cl.duoc.pizzeriaapp.modelo.LineaPedido
 import cl.duoc.pizzeriaapp.modelo.Pedido
 import cl.duoc.pizzeriaapp.modelo.Repartidor
 import java.time.LocalDate
+import cl.duoc.pizzeriaapp.utilidades.erroresCliente
+import cl.duoc.pizzeriaapp.utilidades.formatearTelefono
+import cl.duoc.pizzeriaapp.utilidades.normalizarNombre
 
 const val MAX_PEDIDOS_DIA = 50
 const val PRIMER_ID_PEDIDO = 1001
@@ -19,6 +22,13 @@ data class Combinacion(val primero: Pedido, val segundo: Pedido, val resultado: 
 sealed interface ResultadoRegistro {
     data class Registrado(val pedido: Pedido) : ResultadoRegistro
     data class SinIngredientes(val faltantes: Map<String, Int>) : ResultadoRegistro
+}
+
+// Resultado de registrar un cliente desde el formulario.
+sealed interface ResultadoCliente {
+    data class Registrado(val cliente: Cliente) : ResultadoCliente
+    data class YaRegistrado(val cliente: Cliente) : ResultadoCliente // mismo nombre y correo
+    data class Invalido(val errores: List<String>) : ResultadoCliente
 }
 
 // Estado y operaciones de la pizzería. Reemplaza las variables globales y el
@@ -41,6 +51,28 @@ class Pizzeria(
     val historialCombinaciones: List<Combinacion> get() = combinaciones.toList()
 
     fun buscarPedido(id: Int): Pedido? = pedidos.find { it.id == id }
+
+    // Valida los datos del formulario y registra al cliente con su teléfono en formato
+    // +56 (XXX) XXX-XXX. Si ya existe uno con el mismo nombre y correo, no se duplica.
+    fun registrarCliente(nombre: String, telefono: String, correo: String, direccion: String): ResultadoCliente {
+        val errores = erroresCliente(nombre, telefono, correo, direccion)
+        if (errores.isNotEmpty()) return ResultadoCliente.Invalido(errores)
+
+        val cliente = Cliente(
+            normalizarNombre(nombre),
+            requireNotNull(formatearTelefono(telefono)), // ya validado por erroresCliente
+            correo.trim(),
+            direccion.trim()
+        )
+        val yaExistia = cliente in registroClientes
+        val registrado = registroClientes.registrar(cliente) // si ya existía, devuelve el original
+        return if (yaExistia) ResultadoCliente.YaRegistrado(registrado) else ResultadoCliente.Registrado(registrado)
+    }
+
+    // Totales para el mensaje de resumen. Se calcula cada vez que se pide,
+    // así siempre refleja los datos actuales.
+    fun resumen(): ResumenPizzeria =
+        ResumenPizzeria(registroClientes.cantidad, pedidos.size, registroClientes.ultimo)
 
     // Crea el pedido, valida su costo y, si alcanzan los ingredientes, los descuenta y lo guarda.
     // Lanza IllegalArgumentException si los datos del pedido no son válidos
