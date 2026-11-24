@@ -4,62 +4,39 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import cl.duoc.pizzeriaapp.datos.cargarDemostracion
-import cl.duoc.pizzeriaapp.datos.crearPizzeriaInicial
-import cl.duoc.pizzeriaapp.ui.PantallaPizzeria
+import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import cl.duoc.pizzeriaapp.ui.PantallaInicio
+import cl.duoc.pizzeriaapp.ui.PizzeriaViewModel
 import cl.duoc.pizzeriaapp.ui.theme.PizzeriaAppTheme
 
+// Punto de entrada de la app. Conecta la lógica con la interfaz:
+// - obtiene el ViewModel (módulo :ui), que contiene la pizzería (módulo :datos);
+// - observa su LiveData y entrega el estado a la pantalla Compose;
+// - pasa las acciones del usuario (registrar cliente o pedido) al ViewModel.
 class MainActivity : ComponentActivity() {
+
+    // by viewModels() crea el ViewModel la primera vez y entrega el mismo al recrear
+    // la Activity (por ejemplo, al girar la pantalla), así los datos no se pierden.
+    private val viewModel: PizzeriaViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             PizzeriaAppTheme {
-                // Datos en memoria, como en la versión de consola. remember evita recrearlos
-                // cada vez que Compose redibuja; al rotar la pantalla se vuelven a crear.
-                val pizzeria = remember { crearPizzeriaInicial() }
-                val pedidoDemo = remember { pizzeria.cargarDemostracion() }
+                // observeAsState convierte el LiveData en estado de Compose: cada vez que el
+                // ViewModel publica un estado nuevo, la pantalla se vuelve a dibujar con él.
+                val estado by viewModel.estado.observeAsState()
 
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PantallaPizzeria(
-                        pizzeria = pizzeria,
-                        pedidoDemo = pedidoDemo,
-                        modifier = Modifier.padding(innerPadding),
-                        encabezado = { Greeting() }
-                    )
-                }
+                PantallaInicio(
+                    estado = estado,
+                    onRegistrarCliente = viewModel::registrarCliente,
+                    onRegistrarPedido = viewModel::registrarPedido,
+                    onAvisoMostrado = viewModel::avisoMostrado
+                )
             }
         }
-    }
-}
-
-// Función Greeting de la plantilla, modificada para mostrar el mensaje de bienvenida.
-// El texto está en res/values/strings.xml (recurso mensaje_bienvenida).
-@Composable
-fun Greeting(modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(R.string.mensaje_bienvenida),
-        style = MaterialTheme.typography.headlineSmall,
-        fontWeight = FontWeight.Bold,
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PizzeriaAppTheme {
-        Greeting()
     }
 }
