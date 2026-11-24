@@ -1,4 +1,4 @@
-package cl.duoc.pizzeriaapp
+package cl.duoc.pizzeriaapp.datos
 
 import cl.duoc.pizzeriaapp.datos.ResultadoRegistro
 import cl.duoc.pizzeriaapp.datos.crearPizzeriaInicial

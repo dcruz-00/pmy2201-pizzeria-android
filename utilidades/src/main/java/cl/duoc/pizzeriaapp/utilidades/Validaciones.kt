@@ -1,4 +1,4 @@
-package cl.duoc.pizzeriaapp.validacion
+package cl.duoc.pizzeriaapp.utilidades
 
 import java.time.DateTimeException
 import java.time.LocalDate

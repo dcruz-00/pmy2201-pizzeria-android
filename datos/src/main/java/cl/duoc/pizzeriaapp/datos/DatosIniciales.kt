@@ -13,7 +13,7 @@ import cl.duoc.pizzeriaapp.modelo.PizzaTemporada
 import cl.duoc.pizzeriaapp.modelo.Repartidor
 import cl.duoc.pizzeriaapp.promociones.INICIO_PROMOCION
 import cl.duoc.pizzeriaapp.promociones.estaEnPeriodoPromocion
-import cl.duoc.pizzeriaapp.validacion.formatearTelefono
+import cl.duoc.pizzeriaapp.utilidades.formatearTelefono
 import java.time.LocalDate
 
 // Catálogo, inventario y repartidores con los que parte la pizzería

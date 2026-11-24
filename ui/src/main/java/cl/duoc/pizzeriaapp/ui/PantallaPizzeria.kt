@@ -27,8 +27,8 @@ import cl.duoc.pizzeriaapp.modelo.Producto
 import cl.duoc.pizzeriaapp.promociones.FIN_PROMOCION
 import cl.duoc.pizzeriaapp.promociones.INICIO_PROMOCION
 import cl.duoc.pizzeriaapp.promociones.promocion
-import cl.duoc.pizzeriaapp.validacion.formatearCLP
-import cl.duoc.pizzeriaapp.validacion.formatearFecha
+import cl.duoc.pizzeriaapp.utilidades.formatearCLP
+import cl.duoc.pizzeriaapp.utilidades.formatearFecha
 
 // Pantalla principal: muestra la lógica de las semanas anteriores
 // (catálogo con @Promocionable, pedido combinado con +, inventario con historial).

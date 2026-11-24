@@ -1,9 +1,9 @@
-package cl.duoc.pizzeriaapp
+package cl.duoc.pizzeriaapp.utilidades
 
-import cl.duoc.pizzeriaapp.validacion.convertirFecha
-import cl.duoc.pizzeriaapp.validacion.esCorreoValido
-import cl.duoc.pizzeriaapp.validacion.formatearCLP
-import cl.duoc.pizzeriaapp.validacion.formatearTelefono
+import cl.duoc.pizzeriaapp.utilidades.convertirFecha
+import cl.duoc.pizzeriaapp.utilidades.esCorreoValido
+import cl.duoc.pizzeriaapp.utilidades.formatearCLP
+import cl.duoc.pizzeriaapp.utilidades.formatearTelefono
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

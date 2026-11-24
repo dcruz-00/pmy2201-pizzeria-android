@@ -23,4 +23,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "PizzeriaApp"
-include(":app")
+
+// Estructura modular. Las dependencias van en un solo sentido:
+//   :app -> :ui -> :datos -> :utilidades
+include(":app")        // Punto de entrada: MainActivity y AndroidManifest (genera el APK)
+include(":ui")         // Pantallas Jetpack Compose, tema y ViewModel
+include(":datos")      // Cliente, Producto, Pedido, inventario, promociones y reglas de negocio
+include(":utilidades") // Validaciones, formato y manejo de errores reutilizables

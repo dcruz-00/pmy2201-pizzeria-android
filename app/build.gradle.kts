@@ -40,12 +40,15 @@ android {
 }
 
 dependencies {
-    // Reflection de Kotlin: findAnnotation, memberProperties, declaredMemberFunctions.
-    implementation(libs.kotlin.reflect)
+    // Módulo de UI. Por "api", también deja disponibles :datos, ViewModel y LiveData.
+    implementation(project(":ui"))
+
     // Implementación de java.time para dispositivos con API menor a 26.
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.activity.ktx)               // by viewModels() en MainActivity
+    implementation(libs.androidx.compose.runtime.livedata)   // observeAsState() en MainActivity
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)

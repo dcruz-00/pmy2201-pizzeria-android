@@ -2,7 +2,7 @@ package cl.duoc.pizzeriaapp.modelo
 
 import cl.duoc.pizzeriaapp.promociones.Promocionable
 import cl.duoc.pizzeriaapp.promociones.promocion
-import cl.duoc.pizzeriaapp.validacion.formatearCLP
+import cl.duoc.pizzeriaapp.utilidades.formatearCLP
 
 // Unidades de un mismo ingrediente que puede llevar una pizza.
 val RANGO_UNIDADES_INGREDIENTE = 1..10

@@ -3,8 +3,8 @@ package cl.duoc.pizzeriaapp.modelo
 import cl.duoc.pizzeriaapp.promociones.esPromocionable
 import cl.duoc.pizzeriaapp.promociones.estaEnPeriodoPromocion
 import cl.duoc.pizzeriaapp.promociones.promocion
-import cl.duoc.pizzeriaapp.validacion.formatearCLP
-import cl.duoc.pizzeriaapp.validacion.formatearFecha
+import cl.duoc.pizzeriaapp.utilidades.formatearCLP
+import cl.duoc.pizzeriaapp.utilidades.formatearFecha
 import java.time.LocalDate
 import kotlin.math.roundToInt
 
